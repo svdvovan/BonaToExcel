@@ -10,5 +10,7 @@
     <orderEntry type="library" name="poi-3.17" level="project" />
     <orderEntry type="library" name="jsoup-1.11.3" level="project" />
     <orderEntry type="library" name="commons-io-2.6" level="project" />
+    <orderEntry type="library" name="poi-ooxml-3.17" level="project" />
+    <orderEntry type="library" name="apache-poi-3-17" level="project" />
   </component>
 </module>

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="apache-poi-3-17">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../apache-poi-3-17" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$PROJECT_DIR$/../apache-poi-3-17/docs/apidocs" />
+    </JAVADOC>
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../apache-poi-3-17" recursive="false" />
+  </library>
+</component>
