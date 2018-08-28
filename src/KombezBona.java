@@ -32,14 +32,14 @@ public class KombezBona {
            }
 
 
-      //   String CatalogName = "kombinezony";
+     //    String CatalogName = "kombinezony";
            String CatalogName = "losiny";
     //       String CatalogName = "topy";
            String Path = "https://bonafide.ru/catalog/"+CatalogName;
 
 
            int Page = 1;
-           for (int count = 1; count <= 1; count++) {
+           for (int count = 1; count <= 5; count++) {
 
                FileInputStream inp = new FileInputStream(new File("book.xls"));
                Workbook wb2 = WorkbookFactory.create(inp);
@@ -63,6 +63,7 @@ public class KombezBona {
                        System.out.println(addressUrl);
 
                    Document doc2 = Jsoup.connect(addressUrl).get();
+
                    Elements Nalichie = doc2.getElementsByClass("productinfo__stock");
                    String Categorys = doc2.getElementsByClass("navcat__link navcat__link_active").text();
                    String prices = doc2.getElementsByClass("productinfo__price").text();
@@ -75,46 +76,45 @@ public class KombezBona {
                    System.out.println(prices);
                    System.out.println(Name);
 
-                   Elements razmeres = doc2.getElementsByClass("sizes sizes_dark");
 
-                   for (Element razmer : razmeres) {
-                   Elements data2 = doc2.getElementsByClass("sizes sizes_dark").select("[class^=js-size_change]");
-                       int t = 0;
-                       for (Element data1 : data2) {
-                           System.out.print( data2.get(t).text() + " ; " + data2.get(t).attr("data-count")+ " ; ");
-                           t++;
-                       }
-                   }
+                   ////*/
+
+
+
+
                    System.out.println();
-                   Elements pictures = doc2.getElementsByClass("productphoto__photo owl-lazy");
-                   int z = 0;
 
-                   for (Element picture : pictures) {
-                       System.out.println("https://bonafide.ru" + pictures.get(z).attr("src"));
+                   int rowCount = sheet.getLastRowNum();
+                   Row row = sheet.createRow(++rowCount);
 
-                       z++;
 
-                   }
+try { Elements Mater = doc2.getElementsByClass("paramsmost__param");
+    // int g = 0;
+    //for (Element  Maters : Mater) {
+    for (int h =1; h<=1;h++ ){
+        System.out.println(Mater.get(1).text());
+        //     g++;
+    }
+    String Material = Mater.get(1).text();
 
-                   Elements Mater = doc2.getElementsByClass("paramsmost__param");
-                  // int g = 0;
-                   //for (Element  Maters : Mater) {
-                   for (int h =1; h<=1;h++ ){
-                       System.out.println(Mater.get(1).text());
-                  //     g++;
-                   }
+    Cell cell6 = row.createCell(4);
+    cell6.setCellValue(Material);
+
+}catch (IndexOutOfBoundsException e)
+{ e.printStackTrace();}
+
+
 
                    Elements Description = doc2.getElementsByClass("defaulttext");
                    String Desc = Description.html();
                    System.out.println(Description.html());
 
-                   int rowCount = sheet.getLastRowNum();
-                   Row row = sheet.createRow(++rowCount);
 
-                   Cell cell = row.createCell(0);
+
+                   Cell cell = row.createCell(1);
                    cell.setCellValue("bf-"+ID);
 
-                   Cell cell13 = row.createCell(1);
+                   Cell cell13 = row.createCell(0);
                    cell13.setCellValue(Categorys);
 
                    Cell cell1 = row.createCell(2);
@@ -123,11 +123,55 @@ public class KombezBona {
                    Cell cell2 = row.createCell(3);
                    cell2.setCellValue(prices);
 
-                   Cell cell5 = row.createCell(4);
+          ;
+
+
+                   Cell cell5 = row.createCell(50);
                    cell5.setCellValue(Desc);
 
 
 
+                   Elements pictures = doc2.getElementsByClass("productphoto__photo owl-lazy");
+                   int z = 0;
+                   int y3 = 15;
+
+                   for (Element picture : pictures) {
+                       System.out.println("https://bonafide.ru" + pictures.get(z).attr("src"));
+                       String Foto = "https://bonafide.ru" + pictures.get(z).attr("src");
+
+                       Cell cell11 = row.createCell(y3);
+                       cell11.setCellValue(Foto);
+                       y3++;
+
+                       z++;
+
+                   }
+                   int y4 = 5;
+                   int y5 = 6;
+                   Elements razmeres = doc2.getElementsByClass("sizes sizes_dark");
+
+                   for (Element razmer : razmeres) {
+
+                       Elements data2 = doc2.getElementsByClass("sizes sizes_dark").select("[class^=js-size_change]");
+                       int t = 0;
+                       for (Element data1 : data2) {
+                           System.out.print( data2.get(t).text() + " ; " + data2.get(t).attr("data-count")+ " ; ");
+
+                           String Razmer = data2.get(t).text();
+                           Cell cell20 = row.createCell(y4);
+                           cell20.setCellValue(Razmer);
+                            y4=y4+2;
+
+                           String RazmerCount = data2.get(t).attr("data-count");
+                           Cell cell21 = row.createCell(y5);
+                           cell21.setCellValue(RazmerCount);
+                           y5=y5+2;
+
+
+                           t++;
+                       }
+
+                   }
 
                    y++;
                }
