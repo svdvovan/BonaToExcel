@@ -14,12 +14,17 @@ import java.io.*;
 public class KombezBona {
        public static void main(String[] args) throws IOException, InvalidFormatException {
            System.setProperty("javax.net.ssl.trustStore", "S:/ProjectJava/parser/cert/bonafideru.crt.jks");
+           int LastPage = 3;
 
+               String CatalogName = "kombinezony";
+           // String CatalogName = "losiny";
+           //       String CatalogName = "topy";
+           String Path = "https://bonafide.ru/catalog/"+CatalogName;
 
            Workbook wb = new HSSFWorkbook();
            CreationHelper createHelper = wb.getCreationHelper();
-           Sheet sheet1 = wb.createSheet("1лист");
-           FileOutputStream fileOut = new FileOutputStream("book.xls");
+           Sheet sheet1 = wb.createSheet(CatalogName);
+           FileOutputStream fileOut = new FileOutputStream("book_"+CatalogName+".xls");
 
 
            try {
@@ -32,16 +37,13 @@ public class KombezBona {
            }
 
 
-     //    String CatalogName = "kombinezony";
-           String CatalogName = "losiny";
-    //       String CatalogName = "topy";
-           String Path = "https://bonafide.ru/catalog/"+CatalogName;
+
 
 
            int Page = 1;
-           for (int count = 1; count <= 5; count++) {
+           for (int count = 1; count <= LastPage; count++) {
 
-               FileInputStream inp = new FileInputStream(new File("book.xls"));
+               FileInputStream inp = new FileInputStream(new File("book_"+CatalogName+".xls"));
                Workbook wb2 = WorkbookFactory.create(inp);
                Sheet sheet = wb2.getSheetAt(0);
 
@@ -64,14 +66,14 @@ public class KombezBona {
 
                    Document doc2 = Jsoup.connect(addressUrl).get();
 
-                   Elements Nalichie = doc2.getElementsByClass("productinfo__stock");
+                   String Nalichie = doc2.getElementsByClass("productinfo__stock").text();
                    String Categorys = doc2.getElementsByClass("navcat__link navcat__link_active").text();
                    String prices = doc2.getElementsByClass("productinfo__price").text();
                    String ID = doc2.getElementsByClass("btn productinfo__btn js-add2basket btn_incart_no btn_avail_yes").attr("data-id");
                    String Name = doc2.getElementsByClass("productinfo__h").text();
 
                    System.out.println("bf-"+ID);
-                   System.out.println(Nalichie.text());
+                   System.out.println(Nalichie);
                    System.out.println(Categorys);
                    System.out.println(prices);
                    System.out.println(Name);
@@ -123,6 +125,9 @@ try { Elements Mater = doc2.getElementsByClass("paramsmost__param");
                    Cell cell2 = row.createCell(3);
                    cell2.setCellValue(prices);
 
+                   Cell cell31 = row.createCell(17);
+                   cell31.setCellValue(Nalichie);
+
           ;
 
 
@@ -133,7 +138,7 @@ try { Elements Mater = doc2.getElementsByClass("paramsmost__param");
 
                    Elements pictures = doc2.getElementsByClass("productphoto__photo owl-lazy");
                    int z = 0;
-                   int y3 = 15;
+                   int y3 = 18;
 
                    for (Element picture : pictures) {
                        System.out.println("https://bonafide.ru" + pictures.get(z).attr("src"));
@@ -176,7 +181,7 @@ try { Elements Mater = doc2.getElementsByClass("paramsmost__param");
                    y++;
                }
                try {
-              FileOutputStream fileOut1 = new FileOutputStream("book.xls");
+              FileOutputStream fileOut1 = new FileOutputStream("book_"+CatalogName+".xls");
 
 
 
