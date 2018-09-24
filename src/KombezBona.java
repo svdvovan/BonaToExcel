@@ -6,6 +6,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 
 /**
@@ -13,6 +15,24 @@ import java.io.*;
  */
 public class KombezBona {
        public static void main(String[] args) throws IOException, InvalidFormatException {
+
+//GUI
+//           javax.swing.SwingUtilities.invokeLater(new Runnable() {
+//               public void run() {
+//                   JFrame.setDefaultLookAndFeelDecorated(true);
+//                   GuiMenu frame = new GuiMenu();
+//                   frame.pack();
+//                   frame.setLocationRelativeTo(null);
+//                   frame.setVisible(true);
+//
+//               }
+//           });
+
+
+//GUI
+
+
+
            System.setProperty("javax.net.ssl.trustStore", "S:/ProjectJava/parser/cert/bonafideru.crt.jks");
            int LastPage = 3;
 
@@ -20,6 +40,9 @@ public class KombezBona {
            // String CatalogName = "losiny";
            //       String CatalogName = "topy";
            String Path = "https://bonafide.ru/catalog/"+CatalogName;
+
+
+
 
            Workbook wb = new HSSFWorkbook();
            CreationHelper createHelper = wb.getCreationHelper();
@@ -32,14 +55,23 @@ public class KombezBona {
                fileOut.close();
            } catch (IOException e) {
                e.printStackTrace();
-
-
            }
+//GUI
+           String Hostname = "bonafide.ru";
+           JFrame startFrame = new JFrame("Подготовка подключения");
+           startFrame.setSize(500,100);
+           startFrame.setLocationRelativeTo(null);
+           JLabel topLabel = new JLabel("Подождите идет запуск программы",SwingConstants.CENTER);
+           startFrame.add(topLabel);
+           startFrame.setVisible(true);
 
 
 
+           JFrame frame = new JFrame("Идет парсинг сайта " + Hostname + " ,категория: "+ CatalogName);
+           frame.setLocationRelativeTo(null);
 
 
+//GUI
            int Page = 1;
            for (int count = 1; count <= LastPage; count++) {
 
@@ -53,7 +85,23 @@ public class KombezBona {
 
                Document doc1 = Jsoup.connect(Path).get();
                Elements links1 = doc1.getElementsByClass("product__mid");
+//GUI
+               startFrame.dispose();
+               JProgressBar progressBar = new JProgressBar();
+               progressBar.setIndeterminate(true);
+               progressBar.setStringPainted(true);
+               String DF = Integer.toString(Page);
 
+               progressBar.setString( "Страница " +DF);
+               progressBar.setValue(Page);
+
+               frame.setLocationRelativeTo(null);
+               frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+               frame.setContentPane(progressBar);
+               frame.setPreferredSize(new Dimension(500, 100));
+               frame.pack();
+               frame.setVisible(true);
+//GUI
 
                int y = 0;
                for (Element link1 : links1) {
@@ -200,6 +248,9 @@ try { Elements Mater = doc2.getElementsByClass("paramsmost__param");
                Page++;
            }
 
+
+           frame.dispose();
+           JOptionPane.showMessageDialog(null, "Парсинг завершен. Количество обработанных страниц "+ (Page-1));
        }
 
 }
